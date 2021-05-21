@@ -46,6 +46,9 @@ struct IO
 #if defined(LIGHTMAP_ON)
 	float2 lmuv : TEXCOORD1;
 #endif
+#if defined(DYNAMICLIGHTMAP_ON)
+	float2 dlmuv : TEXCOORD5;
+#endif
 	UNITY_VERTEX_INPUT_INSTANCE_ID
 };
 
@@ -61,7 +64,7 @@ struct v2f
 	float4 objectPosition : POSITION2; //The position relative to the mesh origin. 
 	float3 normal : NORMAL; //The normal in screen space.
 	float2 uv : TEXCOORD0; //uv coordinates
-	float4 tangent : TEXCOORD5;//for bump mapping.
+	float4 tangent : TEXCOORD3;//for bump mapping.
 	float vid : VERTEXID;
 	float instanceID : INSTANCEID;
 
@@ -70,6 +73,9 @@ struct v2f
 #endif
 #if defined(LIGHTMAP_ON)
 	float2 lmuv : TEXCOORD1;
+#endif
+#if defined(DYNAMICLIGHTMAP_ON)
+	float2 dlmuv : TEXCOORD5;
 #endif
 #if !defined(UNITY_PASS_SHADOWCASTER)
 	SHADOW_COORDS(7)

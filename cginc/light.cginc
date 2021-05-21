@@ -29,7 +29,6 @@ float4 applyLight(PIO process, v2f fragin, float4 color) {
 		float2 nm = tex2D(_NormalTex, process.normalUV + process.uvOffset).rg;
 		lpbrightness += nm.r;
 		lpbrightness += nm.g;
-
 	#else 
 		float3 ambientDirection = unity_SHAr.xyz + unity_SHAg.xyz + unity_SHAb.xyz; //do not normalize
 		float brightness = ToonDot(ambientDirection, process.worldNormal.xyz, 1);
@@ -55,6 +54,9 @@ float4 applyLight(PIO process, v2f fragin, float4 color) {
 		output.rgb = max(0, output.rgb);
 		output.rgb *= _FinalBrightness;
 		output.rgb *= process.attenuation;
+		#if defined(DYNAMICLIGHTMAP_ON)
+			output.rgb += DecodeLightmap(UNITY_SAMPLE_TEX2D(unity_DynamicLightmap, fragin.dlmuv));
+		#endif
 
 		//ambient color (lightprobes)
 		float3 probeColor = lpbrightness * _LMProbeAmount;

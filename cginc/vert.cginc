@@ -35,5 +35,9 @@ v2f vert( IO v ){
 #if defined(LIGHTMAP_ON)
 	output.lmuv = v.lmuv.xy * unity_LightmapST.xy + unity_LightmapST.zw;
 #endif
+#if defined(DYNAMICLIGHTMAP_ON)
+	output.dlmuv = v.dlmuv.xy * unity_DynamicLightmapST.xy + unity_DynamicLightmapST.zw;
+#endif
+
 	return output;
 }
