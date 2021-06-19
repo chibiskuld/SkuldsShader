@@ -16,8 +16,6 @@ float4 frag(v2f fragin, uint isFrontFace : SV_IsFrontFace) : SV_Target
 
 	float4 baseColor = color; //for any alternative calculations.
 
-
-
 	#ifdef UNITY_PASS_FORWARDBASE
 		color = applyDetailLayer(process, fragin, color, 1-_DetailUnlit);
 

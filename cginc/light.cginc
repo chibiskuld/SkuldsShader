@@ -22,15 +22,18 @@ float4 applyLight(PIO process, v2f fragin, float4 color) {
 		float brightness = ToonDot(direction, process.worldNormal, process.attenuation);
 	#endif
 #else
-	#if !defined(LIGHTMAP_ON)//Hmm... this should probably be optional.
-
-		//Calculate light probes from foward base.
+	//Calculate light probes from foward base.
+	#if defined(LIGHTMAP_ON)
+		float3 ambientDirection = normalize(UnityObjectToWorldNormal(fragin.normal).xyz);
+		float lpbrightness = -1.5;
+		float2 nm = tex2D(_NormalTex, process.normalUV + process.uvOffset).rg;
+		lpbrightness += nm.r;
+		lpbrightness += nm.g;
+	#else 
 		float3 ambientDirection = unity_SHAr.xyz + unity_SHAg.xyz + unity_SHAb.xyz; //do not normalize
-		float brightness = ToonDot(ambientDirection, process.worldNormal.xyz, 1 );
-		//brightness = brightness * 2 - 1; //only light probes get a potentionally negative value.
-		//just add the directional light.
-		float directBrightness = ToonDot(normalize(_WorldSpaceLightPos0.xyz), process.worldNormal.xyz, process.attenuation);
+		float brightness = ToonDot(ambientDirection, process.worldNormal.xyz, 1);
 	#endif
+	float directBrightness = ToonDot(normalize(_WorldSpaceLightPos0.xyz), process.worldNormal.xyz, process.attenuation);
 #endif
 
 	/************************
@@ -51,12 +54,36 @@ float4 applyLight(PIO process, v2f fragin, float4 color) {
 		output.rgb = max(0, output.rgb);
 		output.rgb *= _FinalBrightness;
 		output.rgb *= process.attenuation;
+		#if defined(DYNAMICLIGHTMAP_ON)
+			output.rgb += DecodeLightmap(UNITY_SAMPLE_TEX2D(unity_DynamicLightmap, fragin.dlmuv));
+		#endif
+
+		//ambient color (lightprobes)
+		float3 probeColor = lpbrightness * _LMProbeAmount;
+		output.rgb += probeColor;
+
+		//direct Light
+		float3 directColor = _LightColor0.rgb;
+		directColor *= directBrightness;
+		directColor *= color.rgb;
+		output.rgb += directColor * _LMDirectAmount;
+
+		#ifdef VERTEXLIGHT_ON
+				float3 vcolor = Shade4PointLightsFixed(
+					unity_4LightPosX0, unity_4LightPosY0, unity_4LightPosZ0,
+					unity_LightColor[0].rgb, unity_LightColor[1].rgb,
+					unity_LightColor[2].rgb, unity_LightColor[3].rgb,
+					unity_4LightAtten0, process.worldPosition, process.worldNormal
+				);
+				output.rgb += vcolor * color.rgb;
+		#endif
 	#else
 		//ambient color (lightprobes): 
 		float3 probeColor = ShadeSH9(float4(0, 0, 0, 1));
 		probeColor *= brightness;
 		output.rgb += color.rgb * probeColor;
 	
+		//direct Light
 		float3 directColor = _LightColor0.rgb;
 		directColor *= directBrightness;
 		directColor *= color.rgb;

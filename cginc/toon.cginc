@@ -42,9 +42,9 @@ float ToonDot(float3 direction, float3 normal, float attenuation)
 	d /= 2; //0 to 1
 	d = saturate(d);
 
+	d *= attenuation;
 	float brightness = ApplyProceduralToonRamp(d);
 
-	brightness *= attenuation;
 	brightness = min(_ShadeMax, brightness);//just to help prevent overdrive.
 	return brightness;
 }

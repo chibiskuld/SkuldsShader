@@ -153,6 +153,27 @@
 
 			ENDCG
 		}
+
+		Pass
+		{
+			Name "META"
+			Tags { "LightMode" = "Meta" }
+
+			Cull Off
+
+			CGPROGRAM
+			#pragma vertex vert_meta
+			#pragma fragment frag_meta
+
+			#pragma shader_feature _EMISSION
+			#pragma shader_feature _METALLICGLOSSMAP
+			#pragma shader_feature _ _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
+			#pragma shader_feature ___ _DETAIL_MULX2
+			#pragma shader_feature EDITOR_VISUALIZATION
+
+			#include "UnityStandardMeta.cginc"
+			ENDCG
+		}
 	} 
 	FallBack "Diffuse"
 }

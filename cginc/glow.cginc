@@ -7,6 +7,7 @@ float _GlowSharpness;
 int _GlowRainbow;
 float _GlowAmount;
 float _GlowDirection;
+int _GlowDirect;
 
 //just to make sure there's no repeat code:
 float4 getGlowAmount(PIO process, v2f fragin, float mask ) {
@@ -63,9 +64,19 @@ float4 applyGlow(PIO process, v2f fragin, float4 col) {
 	}
 	glowCol *= _GlowColor.rgb;
 
-	float glowAmt = getGlowAmount(process, fragin, mask.a);
-	glowAmt *= mask.a;
-	col.rgb = lerp(col.rgb, glowCol, glowAmt);
+	if (_GlowDirect < 1) {
+		float glowAmt = getGlowAmount(process, fragin, mask.a);
+		glowAmt *= mask.a;
+		col.rgb = lerp(col.rgb, glowCol, glowAmt);
+	}
+	else {
+#if defined(UNITY_PASS_FORWARDBASE)
+		float glowAmt = saturate(_LightColor0.a);
+		glowAmt *= mask.a;
+		glowAmt *= _GlowAmount;
+		col.rgb = lerp(col.rgb, glowCol, glowAmt);
+#endif
+	}
 
 	return col;
 }

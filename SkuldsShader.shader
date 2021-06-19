@@ -9,6 +9,8 @@
 		_ShadeMin("Min Brightness",Range(0,1)) = 0.0
 		_LMBrightness("Added Lightmap Brightness", Range(-1,1)) = 0
 		_FinalBrightness("Final Brightness",Range(0,5)) = 1
+		_LMProbeAmount("LM Normal Emulation",Range(0,1)) = 0
+		_LMDirectAmount("Direct Light Amount with Light Maps",Range(0,1)) = 0
 
 		[space]
 		_MainTex("Base Layer", 2D) = "white" {}
@@ -51,6 +53,7 @@
 		_GlowSharpness("Glow Sharpness",float) = 1.0
 		_GlowDirection("Glow Direction",Int) = 4
 		_GlowRainbow("Rainbow Effect", Int) = 0
+		_GlowDirect("Direct Light Control", Int) = 0
 
 		_DetailHue("Hue",Range(-180,180)) = 0
 		_DetailSaturation("Saturation",Range(-1,10)) = 1
@@ -95,6 +98,7 @@
 			#pragma multi_compile _ SHADOWS_SCREEN
 			#pragma multi_compile _ VERTEXLIGHT_ON
 			#pragma multi_compile _ LIGHTMAP_ON
+			#pragma multi_compile _ DYNAMICLIGHTMAP_ON
 			
 
 			#include "cginc/shared.cginc"
@@ -144,6 +148,30 @@
 
 			#include "cginc/shared.cginc"
 
+			ENDCG
+		}
+
+		// ------------------------------------------------------------------
+		// Extracts information for lightmapping, GI (emission, albedo, ...)
+		// This pass it not used during regular rendering.
+		Pass
+		{
+			Name "META"
+			Tags { "LightMode" = "Meta" }
+
+			Cull Off
+
+			CGPROGRAM
+			#pragma vertex vert_meta
+			#pragma fragment frag_meta
+
+			#pragma shader_feature _EMISSION
+			#pragma shader_feature _METALLICGLOSSMAP
+			#pragma shader_feature _ _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
+			#pragma shader_feature ___ _DETAIL_MULX2
+			#pragma shader_feature EDITOR_VISUALIZATION
+
+			#include "UnityStandardMeta.cginc"
 			ENDCG
 		}
 	} 

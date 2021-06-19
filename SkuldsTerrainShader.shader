@@ -116,6 +116,7 @@
 			#pragma multi_compile _ SHADOWS_SCREEN
 			#pragma multi_compile _ VERTEXLIGHT_ON
 			#pragma multi_compile _ LIGHTMAP_ON
+			#pragma multi_compile _ DYNAMICLIGHTMAP_ON
 			#define TERRAIN
 
 			#include "cginc/shared.cginc"
@@ -169,6 +170,27 @@
 			
 			#include "cginc/shared.cginc"
 
+			ENDCG
+		}
+
+		Pass
+		{
+			Name "META"
+			Tags { "LightMode" = "Meta" }
+
+			Cull Off
+
+			CGPROGRAM
+			#pragma vertex vert_meta
+			#pragma fragment frag_meta
+
+			#pragma shader_feature _EMISSION
+			#pragma shader_feature _METALLICGLOSSMAP
+			#pragma shader_feature _ _SMOOTHNESS_TEXTURE_ALBEDO_CHANNEL_A
+			#pragma shader_feature ___ _DETAIL_MULX2
+			#pragma shader_feature EDITOR_VISUALIZATION
+
+			#include "UnityStandardMeta.cginc"
 			ENDCG
 		}
 	} 
