@@ -122,6 +122,11 @@ sampler2D _CameraGBufferTexture4;
 //sampler2D _ShadowMapTexture;
 #endif
 
+#if defined (SCROLLING)
+int _ScrollDir;
+float _Scrolling;
+#endif
+
 #if !UNITY_PASS_SHADOWCASTER
 	#include "featureMap.cginc"
 	#include "toon.cginc"

@@ -11,7 +11,15 @@ v2f vert( IO v ){
 
 	output.normal = normalize(v.normal);
 #if defined (SCROLLING)
-	v.uv.y += _Time.x/480;
+	switch (_ScrollDir) {
+		case 0:
+			v.uv.x += _Time.x * _Scrolling;
+			break;
+		default:
+		case 1:
+			v.uv.y += _Time.x * _Scrolling;
+			break;
+	}
 #endif
 	output.uv = v.uv;
 	

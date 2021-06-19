@@ -1,4 +1,4 @@
-﻿Shader "Skuld's Shader/Scrolling"
+﻿Shader "Skuld's Shader/Windy"
 {
 	Properties {
 		[space]
@@ -64,12 +64,8 @@
 		_ZWrite("Z-Write",Int) = 1
 		_TCut("Transparent Cutout",Range(0,1)) = 1
 		_AlphaToMask("Alpha To Mask",Int) = 0
-
-		[space]
-		_ScrollDir("Scroll Direction", Int) = 000001
-		_Scrolling("Scrolling Amount",float) = 1
 	}
-	CustomEditor "SkuldsShaderScrollingEditor"
+	CustomEditor "SkuldsShaderEditor"
 
 	SubShader {
 		Tags { }//defined by Custom Editor now.
@@ -100,7 +96,7 @@
 			#pragma multi_compile _ VERTEXLIGHT_ON
 			#pragma multi_compile _ LIGHTMAP_ON
 			
-			#define SCROLLING
+			#define WINDY
 
 			#include "cginc/shared.cginc"
 
@@ -124,7 +120,7 @@
 			
 			#pragma multi_compile_instancing
 			#pragma multi_compile_fwdadd_fullshadows
-			#define SCROLLING
+			#define WINDY
 
 			#include "cginc/shared.cginc"
 
@@ -139,7 +135,7 @@
 			#include "UnityLightingCommon.cginc"
 			#include "AutoLight.cginc"
 			#include "UnityPBSLighting.cginc"
-			#define SCROLLING
+			#define WINDY
 
 			#pragma target 3.5
 			

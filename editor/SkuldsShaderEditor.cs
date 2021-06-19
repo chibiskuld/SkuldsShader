@@ -301,7 +301,7 @@ public class SkuldsShaderEditor : ShaderGUI
 
     bool renderGroup = false;
     public enum RenderType { Opaque, Transparent, TransparentCutout, Background, Overlay, TreeOpaque, TreeTransparentCutout, TreeBillboard, Grass, GrassBillboard };
-    void RenderOptions()
+    protected void RenderOptions()
     {
         renderGroup = EditorGUILayout.Foldout( renderGroup, "Rendering", skuldHeader);
         if (renderGroup)
@@ -329,7 +329,7 @@ public class SkuldsShaderEditor : ShaderGUI
         }
     }
 
-    bool CreateToggleFromProperty(string label, string property )
+    protected bool CreateToggleFromProperty(string label, string property )
     {
         MaterialProperty prop = FindProperty(property, properties);
         bool value = (prop.floatValue != 0.0f) ? true : false;
@@ -341,7 +341,7 @@ public class SkuldsShaderEditor : ShaderGUI
         return value;
     }
 
-    int CreatePopupFromProperty(string label, string property, System.Type type)
+    protected int CreatePopupFromProperty(string label, string property, System.Type type)
     {
         int value = 0;
         System.Array enumValues = System.Enum.GetValues(type);
