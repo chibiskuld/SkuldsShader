@@ -229,23 +229,19 @@ public class SkuldsShaderEditor : ShaderGUI
                 MaterialProperty glowColor = FindProperty("_GlowColor", properties);
                 materialEditor.ColorProperty(glowColor, "Color:");
                 CreateToggleFromProperty("Rainbow Effect:", "_GlowRainbow");
-                bool dlcontrol = CreateToggleFromProperty("Use Direct Light to Control (Club Aes):", "_GlowDirect");
-                if (!dlcontrol)
-                {
-                    MaterialProperty glowSpeed = FindProperty("_GlowSpeed", properties);
-                    materialEditor.FloatProperty(glowSpeed, "Speed:");
-                    MaterialProperty glowSqueeze = FindProperty("_GlowSqueeze", properties);
-                    materialEditor.FloatProperty(glowSqueeze, "Squeeze:");
-                    MaterialProperty glowSharpness = FindProperty("_GlowSharpness", properties);
-                    materialEditor.FloatProperty(glowSharpness, "Sharpness:");
-                }
+                MaterialProperty glowSpeed = FindProperty("_GlowSpeed", properties);
+                materialEditor.FloatProperty(glowSpeed, "Speed:");
+                MaterialProperty glowSqueeze = FindProperty("_GlowSqueeze", properties);
+                materialEditor.FloatProperty(glowSqueeze, "Squeeze:");
+                MaterialProperty glowSharpness = FindProperty("_GlowSharpness", properties);
+                materialEditor.FloatProperty(glowSharpness, "Sharpness:");
                 EditorGUILayout.EndVertical();
             }
         }
     }
 
 
-    bool lightGroup = false;
+        bool lightGroup = false;
     void LightOptions()
     {
 
@@ -305,7 +301,7 @@ public class SkuldsShaderEditor : ShaderGUI
 
     bool renderGroup = false;
     public enum RenderType { Opaque, Transparent, TransparentCutout, Background, Overlay, TreeOpaque, TreeTransparentCutout, TreeBillboard, Grass, GrassBillboard };
-    protected void RenderOptions()
+    void RenderOptions()
     {
         renderGroup = EditorGUILayout.Foldout( renderGroup, "Rendering", skuldHeader);
         if (renderGroup)

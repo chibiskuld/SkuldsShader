@@ -9,6 +9,8 @@
 		_ShadeMin("Min Brightness",Range(0,1)) = 0.0
 		_LMBrightness("Added Lightmap Brightness", Range(-1,1)) = 0
 		_FinalBrightness("Final Brightness",Range(0,5)) = 1
+		_LMProbeAmount("LM Normal Emulation",Range(0,1)) = 0
+		_LMDirectAmount("Direct Light Amount with Light Maps",Range(0,1)) = 0
 
 		[space]
 		_MainTex("Base Layer", 2D) = "white" {}
@@ -33,7 +35,7 @@
 		_Reflectiveness("Reflectiveness",Range(0,1)) = 0
 		_Height("Height",Range(0,1)) = 0
 		_ReflectType("Reflection Type",Int) = 0
-		
+
 		[space]
 		_DetailLayer("Enable Detail Layer",Int) = 0
 		_DetailTex("Detail Layer", 2D) = "black" {}
@@ -51,6 +53,7 @@
 		_GlowSharpness("Glow Sharpness",float) = 1.0
 		_GlowDirection("Glow Direction",Int) = 4
 		_GlowRainbow("Rainbow Effect", Int) = 0
+		_GlowDirect("Direct Light Control", Int) = 0
 
 		_DetailHue("Hue",Range(-180,180)) = 0
 		_DetailSaturation("Saturation",Range(-1,10)) = 1
@@ -66,7 +69,7 @@
 		_AlphaToMask("Alpha To Mask",Int) = 0
 
 		[space]
-		_ScrollDir("Scroll Direction", Int) = 000001
+		_ScrollDir("Scroll Direction", Int) = 0
 		_Scrolling("Scrolling Amount",float) = 1
 	}
 	CustomEditor "SkuldsShaderScrollingEditor"
